@@ -44,14 +44,14 @@
 	//设置材质路径
 //	mtlLoader.setPath('../obj/computer/');
 	//读取文件
-	mtlLoader.load('../obj/computer/file.mtl', (mtl) => {
+	mtlLoader.load('../obj/angel/angel.mtl', (mtl) => {
 		mtl.preload();
 		let loader = new THREE.OBJLoader();
 		//设置材质
 		loader.setMaterials(mtl);
-		loader.load('../obj/computer/file.obj', (computerObj) => {
+		loader.load('../obj/angel/angel.obj', (computerObj) => {
 			//缩放到0.1
-			computerObj.scale.set(0.5, 0.5, 0.5);
+			computerObj.scale.set(9, 9, 9);
 			computerObj.position.y += 100;
 			new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('../obj/computer/grid_opacity.jpg') } );
 			scene.add(computerObj);
@@ -69,7 +69,7 @@
 	scene.add(light);
 	//加入环境光
 	scene.add(new THREE.AmbientLight('#5a5353'))
-	//加入相机对象 透视相机
+	//加入相机对象 透视相机  //夹角, 长宽比例，
 	let camera = new THREE.PerspectiveCamera(40, 800/600, 1, 100000);
 	//设置相机位置
 	camera.position.set(300, 300, 300)
