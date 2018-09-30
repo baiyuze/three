@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "http-server"
+  },
   "dependencies": {
     "@types/three": "^0.92.23"
   }
