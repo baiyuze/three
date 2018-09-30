@@ -48,7 +48,7 @@
 		loader.load('../obj/jiqiren/file.obj', (computerObj) => {
 			//缩放到0.1
 			computerObj.emissive=0x00ffff;
-			computerObj.scale.set(10, 10, 10);
+			computerObj.scale.set(20, 20, 20);
 			computerObj.position.y += 25;
 			scene.add(computerObj);
 
@@ -81,10 +81,10 @@
 	scene.add(light);
 	//加入环境光
 	scene.add(new THREE.AmbientLight('#5a5353'))
-	//加入相机对象 透视相机
+	//加入相机对象 透视相机  //夹角, 长宽比例，
 	let camera = new THREE.PerspectiveCamera(40, 800/600, 1, 100000);
 	//设置相机位置
-	camera.position.set(100, 400, 2500)
+	camera.position.set(100, 1500, 2500)
 	//相机朝向场景中心
 	camera.lookAt(scene.position);
 	//创建渲染器
