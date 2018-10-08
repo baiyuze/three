@@ -152,7 +152,16 @@ class Init {
 
   //循环
   loop() {
+    // Rotate the propeller, the sea and the sky
+    // airplane.propeller.rotation.x += 0.3;
+    this.mesh.rotation.z += 0.005;
+    // sky.mesh.rotation.z += .01;
 
+    // render the scene
+    this.renderer.render(this.scene, this.camera);
+
+    // call the loop function again
+    requestAnimationFrame(this.loop.bind(this));
   }
 
 }
