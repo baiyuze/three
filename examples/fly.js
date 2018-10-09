@@ -83,13 +83,17 @@ class Init {
 
   //重置窗口大小
   setWindowsSize() {
-    let height = window.innerHeight;
-    let width = window.innerWidth;
-    this.renderer.setSize(width, height);
-    //相机纵横比
-    this.camera.aspect = width / height;
-    //更新投影矩阵
-    this.camera.updateProjectionMatrix();
+    clearTimeout(this.t);
+
+    this.t = setTimeout(() => {
+      let height = window.innerHeight;
+      let width = window.innerWidth;
+      this.renderer.setSize(width, height);
+      //相机纵横比
+      this.camera.aspect = width / height;
+      //更新投影矩阵
+      this.camera.updateProjectionMatrix();
+    }, 500)
   }
 
   //创建灯光
@@ -128,6 +132,23 @@ class Init {
     this.geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10);
     //在x轴上旋转几何体
     this.geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI/2));
+    this.geom.mergeVertices();
+    let length = this.geom.vertices.length;
+    this.saveVertices = [];
+    for(let i = 0; i < length; i++) {
+      let pointer = this.geom.vertices[i];
+      this.saveVertices.push({
+        x: pointer.x,
+        y: pointer.y,
+        z: pointer.z,
+        //随机角度0-360
+        ang: Math.random() * Math.PI * 2,
+        //随机距离5-20
+        amp: 5 + Math.random() * 15,
+        //随机速度
+        speed: 0.016 + Math.random()*0.032
+      })
+    }
     //创建材质 表面光亮的材质
     this.mat = new THREE.MeshPhongMaterial({
       color: Colors.blue,
@@ -143,6 +164,21 @@ class Init {
     //添加到场景
     this.scene.add(this.seaMesh);
     this.renderer.render(this.scene, this.camera);
+  }
+
+  //随机波浪
+  seaRadom() {
+    let l = this.geom.vertices.length;
+    let verts = this.geom.vertices;
+    for(let i = 0; i < l; i ++) {
+      let vprops = this.saveVertices[i];
+      let v = verts[i]; 
+      v.x = vprops.x + Math.cos(vprops.ang)*vprops.amp;
+      v.y = vprops.y + Math.sin(vprops.ang)*vprops.amp;
+      vprops.ang += vprops.speed;
+    }
+    this.geom.verticesNeedUpdate = true;
+    // this.geom.rotation.z += 0.005;
   }
 
   //创建飞机 
@@ -233,6 +269,9 @@ class Init {
     // render the scene
     this.cloudBoxMesh.rotation.z += 0.01;
     this.renderer.render(this.scene, this.camera);
+    //随机波浪
+    // console.log(this.saveVertices.length,'this.saveVertices.length')
+    this.seaRadom();
     //帧数
     this.stats.update();
 
